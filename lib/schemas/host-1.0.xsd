@@ -6,7 +6,6 @@
         xmlns:eppcom="urn:ietf:params:xml:ns:eppcom-1.0"
         xmlns="http://www.w3.org/2001/XMLSchema"
         elementFormDefault="qualified">
-
 <!--
 Import common element types.
 -->
@@ -57,7 +56,6 @@ Child elements of the <create> command.
       <maxLength value="45"/>
     </restriction>
   </simpleType>
-
   <simpleType name="ipType">
     <restriction base="token">
       <enumeration value="v4"/>
@@ -228,7 +226,6 @@ Pending action notification response elements.
       <element name="paDate" type="dateTime"/>
     </sequence>
   </complexType>
-
   <complexType name="paNameType">
     <simpleContent>
       <extension base="eppcom:labelType">

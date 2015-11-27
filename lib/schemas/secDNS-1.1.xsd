@@ -16,7 +16,6 @@
  <!--
  Child elements found in EPP commands.
  -->
-
   <element name="create" type="secDNS:dsOrKeyType"/>
   <element name="update" type="secDNS:updateType"/>
 
@@ -65,7 +64,6 @@
  and optionally with dsData interface
  -->
  <complexType name="keyDataType">
-
    <sequence>
      <element name="flags" type="unsignedShort"/>
      <element name="protocol" type="unsignedByte"/>
@@ -114,7 +112,6 @@
  <!--
  Child elements supporting the <chg> element.
  -->
-
  <complexType name="chgType">
    <sequence>
      <element name="maxSigLife" type="secDNS:maxSigLifeType"
