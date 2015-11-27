@@ -92,7 +92,6 @@
     <sequence>
       <element name="hostName" type="eppcom:labelType"/>
       <element name="hostAddr" type="host:addrType"
-
        minOccurs="0" maxOccurs="unbounded"/>
     </sequence>
    </complexType>
@@ -402,20 +401,24 @@
       <enumeration value="clientUpdateProhibited"/>
       <enumeration value="inactive"/>
       <enumeration value="ok"/>
+      <enumeration value="expired"/>
       <enumeration value="pendingCreate"/>
       <enumeration value="pendingDelete"/>
       <enumeration value="pendingRenew"/>
       <enumeration value="pendingTransfer"/>
       <enumeration value="pendingUpdate"/>
+      <enumeration value="pendingDeleteConfirmation"/>
       <enumeration value="serverDeleteProhibited"/>
       <enumeration value="serverHold"/>
       <enumeration value="serverRenewProhibited"/>
       <enumeration value="serverTransferProhibited"/>
       <enumeration value="serverUpdateProhibited"/>
-      <!-- Custom EIS domain status values -->
-      <enumeration value="serverTechChangeProhibited"/>
-      <enumeration value="serverAdminChangeProhibited"/>
+      <enumeration value="serverForceDelete"/>
+      <enumeration value="serverManualInzone"/>
       <enumeration value="serverRegistrantChangeProhibited"/>
+      <enumeration value="serverAdminChangeProhibited"/>
+      <enumeration value="serverTechChangeProhibited"/>
+      <enumeration value="deleteCandidate"/>
     </restriction>
    </simpleType>
 
