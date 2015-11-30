@@ -155,10 +155,6 @@ class Domain < ActiveRecord::Base
     max: -> { Setting.tech_contacts_max_count }
   }
 
-  validates :nameservers, uniqueness_multi: {
-    attribute: 'hostname'
-  }
-
   validates :tech_domain_contacts, uniqueness_multi: {
     attribute: 'contact_code_cache'
   }
