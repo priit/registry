@@ -220,14 +220,26 @@ class Epp::Domain < Domain
 
   def nameservers_from(frame)
     res = []
-    frame.css('hostAttr').each do |x|
-      host_attr = {
-        hostname: x.css('hostName').first.try(:text),
-        ipv4: x.css('hostAddr[ip="v4"]').first.try(:text),
-        ipv6: x.css('hostAddr[ip="v6"]').first.try(:text)
-      }
 
-      res << host_attr.delete_if { |_k, v| v.blank? }
+    frame.css('hostAttr').each do |x|
+      hostname = x.css('hostName').try(:text)
+      if x.css('hostAddr').any?
+        # accept unique addresses
+        ipv4 = Set.new x.css('hostAddr[ip="v4"]').map{ |e| e.try(:text) }
+        ipv6 = Set.new x.css('hostAddr[ip="v6"]').map{ |e| e.try(:text) }
+        # TODO: change data model to allow many addresses as datatype inet for each hostname
+        # maybe? allow many domains to map to the same nameserver (consider security implications)
+        # current model has one addr 4 and one addr 6 for each row
+
+        # zip on set allows extra nil for missing values, when bigger set zips the smaller
+        if ipv4.count() > ipv6.count()
+          ipv4.zip(ipv6).map { |addrs| res << {hostname: hostname, ipv4: addrs[0], ipv6: addrs[1]} }
+        else
+          ipv6.zip(ipv4).map { |addrs| res << {hostname: hostname, ipv6: addrs[0], ipv4: addrs[1]} }
+        end
+      else
+        res << {hostname: hostname}
+      end
     end
 
     res
