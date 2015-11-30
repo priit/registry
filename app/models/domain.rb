@@ -537,12 +537,20 @@ class Domain < ActiveRecord::Base
   ### VALIDATIONS ###
 
   def validate_nameserver_ips
+    # glue record requirement can be reduced to at least one IPv4
+    glue = {}
     nameservers.each do |ns|
       next unless ns.hostname.end_with?(name)
-      next if ns.ipv4.present?
-      errors.add(:nameservers, :invalid) if errors[:nameservers].blank?
-      ns.errors.add(:ipv4, :blank)
+      glue[ns.hostname] = 0
+      if ns.ipv4.present?
+        glue[ns.hostname] += 1
+      end
     end
+    # only when subordinate name found, then require one addr
+    unless glue.empty?
+      errors.add(:nameservers, :invalid) unless glue.values.any? { |c| c > 0 }
+    end
+    errors.present?
   end
 
   def validate_period
