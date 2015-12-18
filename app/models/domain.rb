@@ -823,5 +823,34 @@ class Domain < ActiveRecord::Base
     DomainMailer.send(action, DomainMailModel.new(self).send(action)).deliver
   end
 
+  def epp_update!(id, frame = nil, date = Time.zone.now)
+    if frame
+      return unless frame.keys.include %w('registrar_id', 'valid_to', 'registrant_id') # and others?
+    end
+    epp_up_id = id
+    epp_up_id = date
+  end
+
+  def epp_id_update
+    if self.epp_up_id.blank?
+      versions.reverse_each do |an|
+        if (an.object_changes.keys & %w('registrar_id', 'valid_to', 'registrant_id')) ||
+            # the following are probably always empty, until the implementation is fixed, or maybe import did this
+            an.nameserver_ids.present? || an.tech_contact_ids.present? || an.admin_contact_ids.present?
+          self.epp_up_id = user_from_id_role_username(an.whodunnit).try(:registrar).try(:code)
+          self.epp_update = an.created_at unless self.epp_up_id.nil?
+          break unless self.epp_update.nil?
+        end
+      end
+      # did we find anything valid?
+      self.epp_update = nil unless epp_update > self.created_at
+      self.epp_up_id if self.epp_update.nil?
+      # search deeper
+      if self.epp_up_id.blank?
+
+      end
+    end
+    [epp_up_id , epp_up_id ]
+  end
 end
 # rubocop: enable Metrics/ClassLength

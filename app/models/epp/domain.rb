@@ -493,8 +493,10 @@ class Epp::Domain < Domain
       registrant_verification_asked!(frame.to_s, current_user.id)
     end
     self.deliver_emails = true # turn on email delivery for epp
-
-    errors.empty? && super(at)
+    if errors.empty?
+      epp_update!(current_user.registrar.code,frame)
+      super(at)
+    end
   end
   # rubocop: enable Metrics/AbcSize
   # rubocop: enable Metrics/CyclomaticComplexity
@@ -512,6 +514,7 @@ class Epp::Domain < Domain
     self.save
 
     ::PaperTrail.whodunnit = user.id_role_username # updator str should be the request originator not the approval user
+    epp_update! user.registrar.code
     return unless update(frame, user, false)
     clean_pendings!
 

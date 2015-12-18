@@ -22,17 +22,17 @@ module Versions
 
     def creator
       return nil if creator_str.blank?
-      creator = user_from_id_role_username creator_str
+      creator = self.class.user_from_id_role_username creator_str
       creator.present? ? creator : creator_str
     end
 
     def updator
       return nil if updator_str.blank?
-      updator = user_from_id_role_username updator_str
+      updator = self.class.user_from_id_role_username updator_str
       updator.present? ? updator : updator_str
     end
 
-    def user_from_id_role_username(str)
+    def self.user_from_id_role_username(str)
       user = ApiUser.find_by(id: $1) if str =~ /^(\d+)-(ApiUser:|api-)/
       unless user.present?
         user = AdminUser.find_by(id: $1) if str =~ /^(\d+)-AdminUser:/
