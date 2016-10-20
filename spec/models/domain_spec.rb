@@ -926,3 +926,22 @@ describe Domain do
     end
   end
 end
+
+RSpec.describe Domain, db: false do
+  describe '#set_server_hold' do
+    let(:domain) { described_class.new }
+
+    before :example do
+      travel_to Time.zone.parse('05.07.2010')
+      domain.set_server_hold
+    end
+
+    it 'sets corresponding status' do
+      expect(domain.statuses).to include(DomainStatus::SERVER_HOLD)
+    end
+
+    it 'sets :outzone_at to now' do
+      expect(domain.outzone_at).to eq(Time.zone.parse('05.07.2010'))
+    end
+  end
+end

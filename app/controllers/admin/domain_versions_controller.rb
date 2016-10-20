@@ -25,6 +25,8 @@ class Admin::DomainVersionsController < AdminController
       case key
         when 'event'
         whereS += " AND event = '#{value}'"
+        when 'name'
+        whereS += " AND (object->>'name' ~* '#{value}' OR object_changes->>'name' ~* '#{value}')"
       else
         whereS += create_where_string(key, value)
       end
@@ -35,7 +37,7 @@ class Admin::DomainVersionsController < AdminController
     whereS += "  AND object->>'registrar_id' IN (#{registrars.map { |r| "'#{r.id.to_s}'" }.join ','})"   if registrars.present?
     whereS += "  AND 1=0"                                                                                if registrars == []
 
-    versions = DomainVersion.includes(:item).where(whereS)
+    versions = DomainVersion.includes(:item).where(whereS).order(created_at: :desc, id: :desc)
     @q = versions.search(params[:q])
     @versions = @q.result.page(params[:page])
     @versions = @versions.per(params[:results_per_page]) if params[:results_per_page].to_i > 0
@@ -46,12 +48,13 @@ class Admin::DomainVersionsController < AdminController
   def show
     per_page = 7
     @version  = DomainVersion.find(params[:id])
-    @versions = DomainVersion.where(item_id: @version.item_id).order(id: :desc)
+    @versions = DomainVersion.where(item_id: @version.item_id).order(created_at: :desc, id: :desc)
+    @versions_map = @versions.all.map(&:id)
 
     # what we do is calc amount of results until needed version
     # then we cacl which page it is
     if params[:page].blank?
-      counter = @versions.where("id > ?", @version.id).count
+      counter = @versions_map.index(@version.id) + 1
       page    = counter / per_page
       page   += 1 if (counter % per_page) != 0
       params[:page] = page

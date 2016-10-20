@@ -550,7 +550,8 @@ class Domain < ActiveRecord::Base
   def set_validity_dates
     self.registered_at = Time.zone.now
     self.valid_from = Time.zone.now
-    self.valid_to = valid_from + self.class.convert_period_to_time(period, period_unit)
+    # we need + 1 day as this is more correct from juridical side
+    self.valid_to = valid_from.utc.beginning_of_day + self.class.convert_period_to_time(period, period_unit) + 1.day
   end
 
   # rubocop:disable Metrics/AbcSize
@@ -609,16 +610,16 @@ class Domain < ActiveRecord::Base
   end
 
   def set_graceful_expired
-    self.outzone_at = valid_to + Setting.expire_warning_period.days
-    self.delete_at = (outzone_at + (Setting.redemption_grace_period.days + 1.day)).utc.beginning_of_day
+    self.outzone_at = (valid_to + Setting.expire_warning_period.days).utc.beginning_of_day
+    self.delete_at = (outzone_at + Setting.redemption_grace_period.days).utc.beginning_of_day
     self.statuses |= [DomainStatus::EXPIRED]
   end
 
   def set_expired
     # TODO: currently valid_to attribute update logic is open
     # self.valid_to = valid_from + self.class.convert_period_to_time(period, period_unit)
-    self.outzone_at = Time.zone.now + Setting.expire_warning_period.days
-    self.delete_at  = (Time.zone.now + (Setting.redemption_grace_period.days + 1.day)).utc.beginning_of_day
+    self.outzone_at = (valid_to + Setting.expire_warning_period.days).utc.beginning_of_day
+    self.delete_at = (outzone_at + Setting.redemption_grace_period.days).utc.beginning_of_day
     statuses << DomainStatus::EXPIRED
   end
 
@@ -661,16 +662,7 @@ class Domain < ActiveRecord::Base
   end
 
   def pending_update_prohibited?
-    (statuses_was & [
-        DomainStatus::PENDING_DELETE_CONFIRMATION,
-        DomainStatus::CLIENT_UPDATE_PROHIBITED,
-        DomainStatus::SERVER_UPDATE_PROHIBITED,
-        DomainStatus::PENDING_CREATE,
-        DomainStatus::PENDING_UPDATE,
-        DomainStatus::PENDING_DELETE,
-        DomainStatus::PENDING_RENEW,
-        DomainStatus::PENDING_TRANSFER
-    ]).present?
+    (statuses_was & DomainStatus::UPDATE_PROHIBIT_STATES).present?
   end
 
   def set_pending_update
@@ -694,17 +686,7 @@ class Domain < ActiveRecord::Base
   end
 
   def pending_delete_prohibited?
-    (statuses_was & [
-      DomainStatus::CLIENT_DELETE_PROHIBITED,
-      DomainStatus::SERVER_DELETE_PROHIBITED,
-      DomainStatus::CLIENT_UPDATE_PROHIBITED,
-      DomainStatus::SERVER_UPDATE_PROHIBITED,
-      DomainStatus::PENDING_CREATE,
-      DomainStatus::PENDING_RENEW,
-      DomainStatus::PENDING_TRANSFER,
-      DomainStatus::PENDING_UPDATE,
-      DomainStatus::PENDING_DELETE
-    ]).present?
+    (statuses_was & DomainStatus::DELETE_PROHIBIT_STATES).present?
   end
 
   # let's use positive method names
@@ -722,6 +704,7 @@ class Domain < ActiveRecord::Base
 
   def set_server_hold
     statuses << DomainStatus::SERVER_HOLD
+    self.outzone_at = Time.current
   end
 
   # rubocop: disable Metrics/CyclomaticComplexity

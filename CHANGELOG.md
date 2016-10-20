@@ -1,3 +1,42 @@
+19.10.2016
+* BUG fix: Record current time for outzone on domain:delete EPP request
+* ForceDelete automatic notice: fixed et and ee wording to reflect the date the domain is actually deleted.
+
+9.09.2016
+* Registry:
+  * domains expire now at the beginning of the date followed by the date of regsitration. Expiration and redemption grace periods now follow domainregulations more correctly and delete date returned in whois matches the date the domain is actually deleted (129684535)
+
+31.08.2016
+* Admin interface:
+  * contact id supports wildcard search with '%' (129124951)
+* Registry:
+  * BUG: whodunnit filled with incorrect user reference in case of pending request confirmations and rejections (115693873)
+  * domain_cron.rb now searches for domains to be archived using the end of the day parameter allowing it to be run at any time during the day (113430903)
+* EPP:
+  * Invalid use of GET is now logged and replied with proper error message instead of internal error (128054415)
+* Portal for registrars
+  * BUG fix: invoices now dipslay description entered by registrar on invoice request
+
+9.08.2016
+* Admin interface:
+  * actions are now clickable in domain and contact history and return the initial epp request sent to registry (117806281)
+  * access to archived domain and contact objects under settings (108869472)
+  * BUG: noaccess fixed for contacts with incomplete ident data (120093749)
+* Registry:
+  * BUG: adding contact do a domain generated unnecessary log records (116761157)
+  * linked state for a contact is now dynamic (116761157)
+* Portal for registrars:
+  * improved dnssec data presentation in ds data interface mode (118007975)
+  * BUG: now all the ident data is returned for contacts with incomplete set (120093749)
+* EPP
+  * BUG: invalid error 2304 "Object status prohibits operation" (118822101)
+  * BUG: invalid error 2302 "Nameserver already exists on this domain" (118822101)
+
+14.07.2016
+* Registry:
+  * whois records generation fix in contact.rb model (#117612931)
+  * english translation fix for pending_update_notification_for_new_registrant automated registrant message
+
 16.06.2016
 * EPP
   * BUG: XML syntax error for poll and logout if optional clTRID is missing (#121580929)
