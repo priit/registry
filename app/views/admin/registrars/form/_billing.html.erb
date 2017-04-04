@@ -1,0 +1,12 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><%= t '.title' %></div>
+    <div class="panel-body">
+        <div class="form-group">
+            <%= f.label :billing_email, class: 'col-sm-4 control-label' %>
+
+            <div class="col-sm-7">
+                <%= f.email_field :billing_email, class: 'form-control' %>
+            </div>
+        </div>
+    </div>
+</div>
