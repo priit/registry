@@ -46,5 +46,5 @@
           %dt= t(:contact_email)
           %dd= @registrar.email
 
-          %dt= t(:billing_email)
+          %dt= Registrar.human_attribute_name :billing_email
           %dd= @registrar.billing_email
