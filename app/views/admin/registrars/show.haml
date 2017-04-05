@@ -60,8 +60,8 @@
           %dt= t(:contact_email)
           %dd= @registrar.email
 
-          %dt= t(:billing_email)
-          %dd= @registrar.billing_email
+  .col-md-6
+    = render 'billing', registrar: @registrar
 
 .row
   .col-md-12
