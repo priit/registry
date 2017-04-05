@@ -495,7 +495,6 @@ en:
   clear_fields: 'Clear fields'
   created_before: 'Created before'
   created_after: 'Created after'
-  billing_address: 'Billing address'
   billing_email: 'Billing e-mail'
   contact_phone: 'Contact phone'
   contact_email: 'Contact e-mail'

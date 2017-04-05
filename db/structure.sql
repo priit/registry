@@ -2690,7 +2690,6 @@ CREATE TABLE registrars (
     name character varying,
     reg_no character varying,
     vat_no character varying,
-    billing_address character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     creator_str character varying,
@@ -2933,7 +2932,7 @@ ALTER SEQUENCE white_ips_id_seq OWNED BY white_ips.id;
 
 
 --
--- Name: whois_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: whois_records; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE TABLE whois_records (
@@ -4030,7 +4029,7 @@ ALTER TABLE ONLY white_ips
 
 
 --
--- Name: whois_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: whois_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
 ALTER TABLE ONLY whois_records
@@ -4767,14 +4766,14 @@ CREATE INDEX index_users_on_registrar_id ON users USING btree (registrar_id);
 
 
 --
--- Name: index_whois_records_on_domain_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_whois_records_on_domain_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_whois_records_on_domain_id ON whois_records USING btree (domain_id);
 
 
 --
--- Name: index_whois_records_on_registrar_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_whois_records_on_registrar_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
 --
 
 CREATE INDEX index_whois_records_on_registrar_id ON whois_records USING btree (registrar_id);
@@ -5279,4 +5278,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161004101419');
 INSERT INTO schema_migrations (version) VALUES ('20161227193500');
 
 INSERT INTO schema_migrations (version) VALUES ('20170221115548');
+
+INSERT INTO schema_migrations (version) VALUES ('20170405120618');
 
