@@ -24,5 +24,6 @@
       %ul.dropdown-menu{role: "menu"}
         - ApiUser.all_by_identity_code(current_user.identity_code).each do |x|
           %li= link_to "#{x} (#{x.roles.first}) - #{x.registrar}", "/registrar/switch_user/#{x.id}"
+        %li= link_to t('.profile'), registrar_profile_url
         - if user_signed_in?
           %li= link_to t(:log_out_), '/registrar/logout'
