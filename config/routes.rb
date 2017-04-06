@@ -98,6 +98,7 @@ Rails.application.routes.draw do
     get  'pay/return/:bank' => 'payments#back',  as: 'return_payment_with'
     post 'pay/return/:bank' => 'payments#back'
     get  'pay/go/:bank'     => 'payments#pay',   as: 'payment_with'
+    resource :profile, controller: 'profile', only: %i(show)
   end
 
   # REGISTRANT ROUTES
