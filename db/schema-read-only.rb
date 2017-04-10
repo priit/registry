@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405120618) do
+ActiveRecord::Schema.define(version: 20170407141530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -135,6 +135,14 @@ ActiveRecord::Schema.define(version: 20170405120618) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "billing_subscriptions", force: :cascade do |t|
+    t.integer "balance_threshold_cents", null: false
+    t.integer "amount_cents",            null: false
+    t.integer "registrar_id",            null: false
+  end
+
+  add_index "billing_subscriptions", ["registrar_id"], name: "index_billing_subscriptions_on_registrar_id", using: :btree
 
   create_table "blocked_domains", force: :cascade do |t|
     t.datetime "created_at"
@@ -1158,4 +1166,5 @@ ActiveRecord::Schema.define(version: 20170405120618) do
     t.text     "a4_records"
   end
 
+  add_foreign_key "billing_subscriptions", "registrars"
 end
