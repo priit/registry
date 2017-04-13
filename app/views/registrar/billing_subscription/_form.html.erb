@@ -1,0 +1,41 @@
+<%= form_for billing_subscription, url: registrar_billing_subscription_path, html: { class: 'form-horizontal', method: :patch } do |f| %>
+    <%= render 'form_errors', target: billing_subscription %>
+
+    <div class="form-group">
+        <%= f.label :kind, for: nil, class: 'col-sm-2 control-label' %>
+
+        <div class="col-sm-3">
+            <%= f.collection_check_boxes :kind, kinds, :first, :last do |b| %>
+                <%= b.label(class: 'checkbox-inline') { b.check_box + b.text } %>
+            <% end %>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :balance_threshold, class: 'col-sm-2 control-label' %>
+
+        <div class="col-sm-3">
+            <div class="input-group">
+                <%= f.money_field :balance_threshold, class: 'form-control', required: true, autofocus: true %>
+                <div class="input-group-addon"><%= Money::default_currency.symbol %></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :amount, class: 'col-sm-2 control-label' %>
+
+        <div class="col-sm-3">
+            <div class="input-group">
+                <%= f.money_field :amount, class: 'form-control', required: true %>
+                <div class="input-group-addon"><%= Money::default_currency.symbol %></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-2">
+            <%= f.submit t('.btn_save'), class: 'btn btn-primary', name: nil %>
+        </div>
+    </div>
+<% end %>

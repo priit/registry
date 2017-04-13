@@ -1,0 +1,9 @@
+<ol class="breadcrumb">
+    <li><%= link_to t('.profile_link'), registrar_profile_path %></li>
+</ol>
+
+<div class="page-header">
+    <h1><%= t '.title' %></h1>
+</div>
+
+<%= render 'form', billing_subscription: @billing_subscription %>

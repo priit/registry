@@ -1,0 +1,21 @@
+en:
+  registrar:
+    billing_subscription:
+      edit:
+        profile_link: My profile
+        title: Edit billing subscription
+
+      form:
+        btn_save: Save
+
+      update:
+        updated: Billing subscription has been updated.
+
+      destroy:
+        destroyed: Billing subscription has been cancelled.
+
+      for_profile:
+        title: Billing subscription
+        cancel_btn: Cancel
+        cancel_btn_confirm: Are you sure you want to cancel billing subscription?
+        edit_btn: Edit

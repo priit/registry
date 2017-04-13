@@ -27,3 +27,6 @@ en:
 
       billing:
         title: Billing
+
+      billing_subscription:
+        title: Billing subscription

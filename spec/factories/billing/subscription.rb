@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :billing_subscription, class: Billing::Subscription do
-    balance_threshold_cents 100
-    amount_cents 100
+    kind [Billing::Subscription.default_kind]
+    balance_threshold 1
+    amount 1
   end
 end

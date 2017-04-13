@@ -3,7 +3,7 @@ class Registrar
     skip_authorization_check
 
     def show
-
+      @registrar = current_user.registrar
     end
   end
 end

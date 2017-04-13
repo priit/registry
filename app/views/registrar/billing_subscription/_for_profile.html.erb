@@ -1,0 +1,30 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><%= t '.title' %></div>
+    <div class="panel-body">
+        <% if billing_subscription %>
+            <dl class="dl-horizontal">
+                <dt><%= Billing::Subscription.human_attribute_name :kind %></dt>
+                <dd><%= billing_subscription.kind %></dd>
+
+                <dt><%= Billing::Subscription.human_attribute_name :balance_threshold %></dt>
+                <dd><%= number_to_currency billing_subscription.balance_threshold %></dd>
+
+                <dt><%= Billing::Subscription.human_attribute_name :amount %></dt>
+                <dd><%= number_to_currency billing_subscription.amount %></dd>
+            </dl>
+        <% else %>
+            No subscription
+        <% end %>
+    </div>
+    <div class="panel-footer text-right">
+        <%= link_to t('.cancel_btn'), registrar_billing_subscription_path,
+                    method: :delete,
+                    data: { confirm: t('.cancel_btn_confirm') },
+                    id: 'cancel_registrar_billing_subscription_btn',
+                    class: 'btn btn-danger btn-small' %>
+
+        <%= link_to t('.edit_btn'), edit_registrar_billing_subscription_path,
+                    id: 'edit_registrar_billing_subscription_btn',
+                    class: 'btn btn-primary btn-small' %>
+    </div>
+</div>

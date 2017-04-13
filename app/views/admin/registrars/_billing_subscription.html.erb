@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+    <div class="panel-heading"><%= t '.title' %></div>
+    <div class="panel-body">
+        <% if object %>
+            <dl class="dl-horizontal">
+                <dt><%= Billing::Subscription.human_attribute_name :balance_threshold %></dt>
+                <dd><%= billing_subscription.balance_threshold %></dd>
+
+                <dt><%= Billing::Subscription.human_attribute_name :amount %></dt>
+                <dd><%= billing_subscription.amount %></dd>
+            </dl>
+        <% else %>
+            No subscription
+        <% end %>
+    </div>
+</div>

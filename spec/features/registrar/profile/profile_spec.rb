@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.feature 'Registrar area profile' do
+RSpec.feature 'Registrar profile' do
   background do
     Setting.api_ip_whitelist_enabled = false
     Setting.registrar_ip_whitelist_enabled = false
-    sign_in_to_registrar_area(user: create(:api_user_with_unlimited_balance))
+    sign_in_to_registrar_area
   end
 
-  it 'is visible' do
+  scenario 'shows profile' do
     visit registrar_profile_url
     expect(page).to have_text('My profile')
   end

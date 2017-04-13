@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Registrar do
+RSpec.describe Registrar do
   context 'with invalid attribute' do
     before :all do
       @registrar = Registrar.new
@@ -124,5 +124,11 @@ describe Registrar do
     it 'should not have priv contacts' do
       @registrar.priv_contacts.size.should == 0
     end
+  end
+
+  it 'is deletes associated billing subscription' do
+    registrar = create(:registrar)
+    create(:billing_subscription, registrar: registrar)
+    expect { registrar.destroy! }.to change { Billing::Subscription.count }.from(1).to(0)
   end
 end

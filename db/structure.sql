@@ -574,7 +574,8 @@ CREATE TABLE billing_subscriptions (
     id integer NOT NULL,
     balance_threshold_cents integer NOT NULL,
     amount_cents integer NOT NULL,
-    registrar_id integer NOT NULL
+    registrar_id integer NOT NULL,
+    kind character varying[] DEFAULT '{}'::character varying[]
 );
 
 
@@ -4129,7 +4130,7 @@ CREATE INDEX index_api_users_on_registrar_id ON api_users USING btree (registrar
 -- Name: index_billing_subscriptions_on_registrar_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX index_billing_subscriptions_on_registrar_id ON billing_subscriptions USING btree (registrar_id);
+CREATE UNIQUE INDEX index_billing_subscriptions_on_registrar_id ON billing_subscriptions USING btree (registrar_id);
 
 
 --
@@ -5345,4 +5346,8 @@ INSERT INTO schema_migrations (version) VALUES ('20170405120618');
 INSERT INTO schema_migrations (version) VALUES ('20170407124517');
 
 INSERT INTO schema_migrations (version) VALUES ('20170407141530');
+
+INSERT INTO schema_migrations (version) VALUES ('20170411133557');
+
+INSERT INTO schema_migrations (version) VALUES ('20170413104631');
 

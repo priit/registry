@@ -1,6 +1,7 @@
 class Registrar < ActiveRecord::Base
   include Versions # version/registrar_version.rb
 
+  has_one :billing_subscription, class_name: 'Billing::Subscription', dependent: :destroy
   has_many :domains, dependent: :restrict_with_error
   has_many :contacts, dependent: :restrict_with_error
   has_many :api_users, dependent: :restrict_with_error
