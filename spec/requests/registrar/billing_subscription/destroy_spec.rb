@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Registrar::DomainsController do
+RSpec.describe 'registrar billing subscription destroy' do
   let!(:registrar) { create(:registrar) }
   let!(:user) { create(:api_user, registrar: registrar) }
-  let!(:billing_subscription) { create(:billing_subscription, registrar: registrar) }
+  let!(:subscription) { create(:billing_subscription, registrar: registrar) }
 
-  before do
+  before :example do
     sign_in_to_registrar_area(user: user)
   end
 

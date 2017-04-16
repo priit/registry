@@ -1,36 +1,36 @@
 require 'rails_helper'
 
-RSpec.describe Registrar::DomainsController do
+RSpec.describe 'registrar billing subscription update' do
   let(:registrar) { create(:registrar) }
   let(:user) { create(:api_user, registrar: registrar) }
-  subject(:billing_subscription) { registrar.billing_subscription }
+  let!(:subscription) { create(:billing_subscription, registrar: registrar) }
 
-  before do
+  before :example do
     sign_in_to_registrar_area(user: user)
   end
 
   it 'updates kind' do
-    patch registrar_billing_subscription_path, billing_subscription: attributes_for(:billing_subscription,
-                                                                                    kind: %w(e-invoice))
-    billing_subscription.reload
+    patch registrar_billing_subscription_path, billing_subscription:
+      attributes_for(:billing_subscription, kind: [Billing::Subscription.default_kind])
+    subscription.reload
 
-    expect(billing_subscription.kind).to eq(%w(e-invoice))
+    expect(subscription.kind).to eq([Billing::Subscription.default_kind])
   end
 
   it 'updates balance threshold' do
     patch registrar_billing_subscription_path, billing_subscription: attributes_for(:billing_subscription,
                                                                                     balance_threshold: '1')
-    billing_subscription.reload
+    subscription.reload
 
-    expect(billing_subscription.balance_threshold).to eq(Money.from_amount(1))
+    expect(subscription.balance_threshold).to eq(Money.from_amount(1))
   end
 
   it 'updates amount' do
     patch registrar_billing_subscription_path, billing_subscription: attributes_for(:billing_subscription,
                                                                                     amount: '1')
-    billing_subscription.reload
+    subscription.reload
 
-    expect(billing_subscription.amount).to eq(Money.from_amount(1))
+    expect(subscription.amount).to eq(Money.from_amount(1))
   end
 
   it 'redirects to profile' do

@@ -1,23 +1,33 @@
 class Registrar
   class BillingSubscriptionController < BaseController
     skip_authorization_check
-
-    attr_reader :billing_subscription
-
+    before_action :find_subscription, except: %i[new]
     helper_method :kinds
 
+    def new
+      @subscription = current_user.registrar.build_billing_subscription
+    end
+
+    def create
+      @subscription = current_user.registrar.build_billing_subscription(subscription_params)
+      @subscription.kind = @subscription.kind.reject { |value| value.blank? }
+
+      if @subscription.save
+        flash[:notice] = t('.created')
+        redirect_to registrar_profile_url
+      else
+        render :new
+      end
+    end
+
     def edit
-      load_billing_subscription
     end
 
     def update
-      load_billing_subscription
+      @subscription.attributes = subscription_params
+      @subscription.kind = @subscription.kind.reject { |value| value.blank? }
 
-      billing_subscription.attributes = billing_subscription_params
-      billing_subscription.kind = billing_subscription.kind.reject { |value| value.blank? }
-      updated = billing_subscription.save
-
-      if updated
+      if @subscription.save
         flash[:notice] = t('.updated')
         redirect_to registrar_profile_url
       else
@@ -26,25 +36,18 @@ class Registrar
     end
 
     def destroy
-      load_billing_subscription
-
-      billing_subscription.destroy!
-
+      @subscription.destroy!
       flash[:notice] = t('.destroyed')
       redirect_to registrar_profile_url
     end
 
     private
 
-    def load_billing_subscription
-      @billing_subscription = if current_user.registrar.billing_subscription
-                                current_user.registrar.billing_subscription
-                              else
-                                current_user.registrar.build_billing_subscription
-                              end
+    def find_subscription
+      @subscription = current_user.registrar.billing_subscription
     end
 
-    def billing_subscription_params
+    def subscription_params
       params.require(:billing_subscription).permit(:balance_threshold, :amount, kind: [])
     end
 

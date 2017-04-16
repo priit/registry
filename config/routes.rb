@@ -99,7 +99,7 @@ Rails.application.routes.draw do
     post 'pay/return/:bank' => 'payments#back'
     get  'pay/go/:bank'     => 'payments#pay',   as: 'payment_with'
     resource :profile, controller: 'profile', only: %i(show)
-    resource :billing_subscription, controller: 'billing_subscription', only: %i(edit update destroy)
+    resource :billing_subscription, controller: 'billing_subscription', only: %i(new create edit update destroy)
   end
 
   # REGISTRANT ROUTES

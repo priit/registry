@@ -1,5 +1,5 @@
-<%= form_for billing_subscription, url: registrar_billing_subscription_path, html: { class: 'form-horizontal', method: :patch } do |f| %>
-    <%= render 'form_errors', target: billing_subscription %>
+<%= form_for subscription, url: registrar_billing_subscription_path, html: { class: 'form-horizontal' } do |f| %>
+    <%= render 'form_errors', target: subscription %>
 
     <div class="form-group">
         <%= f.label :kind, for: nil, class: 'col-sm-2 control-label' %>
