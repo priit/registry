@@ -40,10 +40,6 @@ class Epp::DomainsController < EppController
           log_pricelist_id: @domain_pricelist.id
         })
 
-        if @domain.disputed?
-          @domain.close_dispute
-        end
-
         render_epp_response '/epp/domains/create'
       else
         handle_errors(@domain)
@@ -60,9 +56,6 @@ class Epp::DomainsController < EppController
         if @domain.epp_pending_update.present?
           render_epp_response '/epp/domains/success_pending'
         else
-          if @domain.disputed?
-            @domain.close_dispute
-          end
           render_epp_response '/epp/domains/success'
         end
       else

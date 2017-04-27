@@ -928,40 +928,6 @@ ALTER SEQUENCE directos_id_seq OWNED BY directos.id;
 
 
 --
--- Name: disputes; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE disputes (
-    id integer NOT NULL,
-    password character varying,
-    expire_date date,
-    created_at timestamp without time zone,
-    comment text NOT NULL,
-    updated_at timestamp without time zone,
-    domain_name character varying NOT NULL
-);
-
-
---
--- Name: disputes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE disputes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: disputes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE disputes_id_seq OWNED BY disputes.id;
-
-
---
 -- Name: dnskeys; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3144,13 +3110,6 @@ ALTER TABLE ONLY directos ALTER COLUMN id SET DEFAULT nextval('directos_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY disputes ALTER COLUMN id SET DEFAULT nextval('disputes_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY dnskeys ALTER COLUMN id SET DEFAULT nextval('dnskeys_id_seq'::regclass);
 
 
@@ -3637,14 +3596,6 @@ ALTER TABLE ONLY depricated_versions
 
 ALTER TABLE ONLY directos
     ADD CONSTRAINT directos_pkey PRIMARY KEY (id);
-
-
---
--- Name: disputes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY disputes
-    ADD CONSTRAINT disputes_pkey PRIMARY KEY (id);
 
 
 --
@@ -4174,13 +4125,6 @@ CREATE INDEX index_delegation_signers_on_domain_id ON delegation_signers USING b
 --
 
 CREATE INDEX index_directos_on_item_type_and_item_id ON directos USING btree (item_type, item_id);
-
-
---
--- Name: index_disputes_on_domain_name; Type: INDEX; Schema: public; Owner: -; Tablespace:
---
-
-CREATE UNIQUE INDEX index_disputes_on_domain_name ON disputes USING btree (domain_name);
 
 
 --
@@ -5313,6 +5257,8 @@ INSERT INTO schema_migrations (version) VALUES ('20161004101419');
 INSERT INTO schema_migrations (version) VALUES ('20161227193500');
 
 INSERT INTO schema_migrations (version) VALUES ('20170131231449');
+
+INSERT INTO schema_migrations (version) VALUES ('20170201150000');
 
 INSERT INTO schema_migrations (version) VALUES ('20170201150000');
 

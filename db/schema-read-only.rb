@@ -267,17 +267,6 @@ ActiveRecord::Schema.define(version: 20170424115801) do
 
   add_index "directos", ["item_type", "item_id"], name: "index_directos_on_item_type_and_item_id", using: :btree
 
-  create_table "disputes", force: :cascade do |t|
-    t.string   "password"
-    t.date     "expire_date"
-    t.datetime "created_at"
-    t.text     "comment",     null: false
-    t.datetime "updated_at"
-    t.string   "domain_name", null: false
-  end
-
-  add_index "disputes", ["domain_name"], name: "index_disputes_on_domain_name", unique: true, using: :btree
-
   create_table "dnskeys", force: :cascade do |t|
     t.integer  "domain_id"
     t.integer  "flags"

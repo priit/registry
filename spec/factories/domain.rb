@@ -19,9 +19,5 @@ FactoryGirl.define do
     factory :domain_discarded do
       statuses [DomainStatus::DELETE_CANDIDATE]
     end
-
-    factory :domain_with_pending_update do
-      statuses [DomainStatus::PENDING_UPDATE]
-    end
   end
 end

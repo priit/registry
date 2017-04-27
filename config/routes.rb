@@ -169,7 +169,6 @@ Rails.application.routes.draw do
     resources :prices, controller: 'billing/prices', except: %i[show]
     resources :mail_templates
     resources :account_activities
-    resources :disputes
 
     resources :bank_statements do
       resources :bank_transactions
