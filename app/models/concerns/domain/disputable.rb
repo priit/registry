@@ -2,7 +2,7 @@ module Concerns::Domain::Disputable
   extend ActiveSupport::Concern
 
   def disputed?
-    @dispute ||= ::Dispute.find_by(domain_name: name)
+    @dispute ||= ::Dispute.for_domain(name)
   end
 
   def close_dispute

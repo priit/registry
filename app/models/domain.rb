@@ -17,8 +17,8 @@ class Domain < ActiveRecord::Base
 
   alias_attribute :on_hold_time, :outzone_at
   alias_attribute :outzone_time, :outzone_at
-  alias_attribute :register_time, :registered_at
 
+  # TODO: whois requests ip whitelist for full info for own domains and partial info for other domains
   # TODO: most inputs should be trimmed before validatation, probably some global logic?
 
   belongs_to :registrar
@@ -49,6 +49,7 @@ class Domain < ActiveRecord::Base
   has_many :dnskeys, dependent: :destroy
 
   has_many :keyrelays
+  has_one  :whois_record # destroyment will be done in after_commit
 
   accepts_nested_attributes_for :dnskeys, allow_destroy: true
 
@@ -91,7 +92,7 @@ class Domain < ActiveRecord::Base
     true
   end
 
-  after_commit :update_whois
+  after_commit :update_whois_record
 
   after_create :update_reserved_domains
   def update_reserved_domains
@@ -614,6 +615,10 @@ class Domain < ActiveRecord::Base
     log
   end
 
+  def update_whois_record
+    UpdateWhoisRecordJob.enqueue name, 'domain'
+  end
+
   def status_notes_array=(notes)
     self.status_notes = {}
     notes ||= []
@@ -682,10 +687,6 @@ class Domain < ActiveRecord::Base
 
   def self.delete_candidates
     where("#{attribute_alias(:delete_time)} < ?", Time.zone.now)
-  end
-
-  def update_whois
-    DNS::DomainName.update_whois(domain_name: name)
   end
 
   def self.uses_zone?(zone)

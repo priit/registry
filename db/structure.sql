@@ -2951,6 +2951,41 @@ ALTER SEQUENCE white_ips_id_seq OWNED BY white_ips.id;
 
 
 --
+-- Name: whois_records; Type: TABLE; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE TABLE whois_records (
+    id integer NOT NULL,
+    domain_id integer,
+    name character varying,
+    body text,
+    json json,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    registrar_id integer
+);
+
+
+--
+-- Name: whois_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE whois_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: whois_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE whois_records_id_seq OWNED BY whois_records.id;
+
+
+--
 -- Name: zones; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
@@ -4021,6 +4056,14 @@ ALTER TABLE ONLY white_ips
 
 
 --
+-- Name: whois_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
+--
+
+ALTER TABLE ONLY whois_records
+    ADD CONSTRAINT whois_records_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: zones_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
@@ -4747,6 +4790,20 @@ CREATE INDEX index_users_on_identity_code ON users USING btree (identity_code);
 --
 
 CREATE INDEX index_users_on_registrar_id ON users USING btree (registrar_id);
+
+
+--
+-- Name: index_whois_records_on_domain_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_whois_records_on_domain_id ON whois_records USING btree (domain_id);
+
+
+--
+-- Name: index_whois_records_on_registrar_id; Type: INDEX; Schema: public; Owner: -; Tablespace:
+--
+
+CREATE INDEX index_whois_records_on_registrar_id ON whois_records USING btree (registrar_id);
 
 
 --

@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.feature 'New reserved domain' do
-  background do
-    sign_in_to_admin_area
-  end
-
   it 'creates new reserved domain' do
+    sign_in_to_admin_area
+
     visit admin_reserved_domains_url
     click_link_or_button 'New reserved domain'
 
@@ -19,6 +17,8 @@ RSpec.feature 'New reserved domain' do
     given!(:dispute) { create(:dispute, domain_name: 'test.com') }
 
     it 'creates new reserved domain' do
+      sign_in_to_admin_area
+
       visit admin_reserved_domains_url
       click_link_or_button 'New reserved domain'
 

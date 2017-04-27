@@ -47,6 +47,10 @@ RSpec.describe Domain do
       @domain.versions.should == []
     end
 
+    it 'should not have whois body' do
+      @domain.whois_record.should == nil
+    end
+
     it 'should not be registrant update confirm ready' do
       @domain.registrant_update_confirmable?('123').should == false
     end
@@ -100,6 +104,14 @@ RSpec.describe Domain do
       domain.admin_contacts << same_contact
       domain.valid?
       domain.errors.full_messages.should match_array(["Admin domain contacts is invalid"])
+    end
+
+    it 'should have whois body by default' do
+      @domain.whois_record.present?.should == true
+    end
+
+    it 'should have whois json by default' do
+      @domain.whois_record.json.present?.should == true
     end
 
     it 'should not be registrant update confirm ready' do
@@ -587,10 +599,9 @@ RSpec.describe Domain do
   end
 end
 
-RSpec.describe Domain do
+RSpec.describe Domain, db: false do
   it { is_expected.to alias_attribute(:on_hold_time, :outzone_at) }
   it { is_expected.to alias_attribute(:outzone_time, :outzone_at) }
-  it { is_expected.to alias_attribute(:register_time, :registered_at) }
 
   describe 'nameserver validation', db: true do
     let(:domain) { described_class.new }
@@ -847,13 +858,5 @@ RSpec.describe Domain do
     it 'returns new registrant\'s id' do
       expect(domain.new_registrant_id).to eq(1)
     end
-  end
-
-  it 'updates whois on after_commit', db: true do
-    domain = build(:domain, name: 'test.com')
-
-    expect(DNS::DomainName).to receive(:update_whois).with(domain_name: 'test.com')
-
-    domain.save!
   end
 end

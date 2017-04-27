@@ -1,16 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Registrar do
-  describe '::alphabetically' do
-    it 'sorts by name alphabetically' do
-      create(:registrar, id: 1, name: 'b-test')
-      create(:registrar, id: 2, name: 'c-test')
-      create(:registrar, id: 3, name: 'a-test')
-
-      expect(described_class.alphabetically.ids).to eq([3, 1, 2])
-    end
-  end
-
+describe Registrar do
   context 'with invalid attribute' do
     before :all do
       @registrar = Registrar.new
